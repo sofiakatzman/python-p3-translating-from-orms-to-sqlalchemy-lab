@@ -1,22 +1,39 @@
 from models import Dog
 
-def create_table(base):
-    pass
+
+from datetime import datetime
+
+from sqlalchemy import (create_engine, desc,
+    Index, Column, DateTime, Integer, String)
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+
+def create_table(base, engine):
+    engine = create_engine('sqlite:///:memory:')
+    base.metadata.create_all(engine)
+    Session = sessionmaker(bind=engine)
+    # session = Session()
+
 
 def save(session, dog):
-    pass
+    session.add(dog)
+    session.commit()
 
 def get_all(session):
-    pass
+    return session.query(Dog).all()
 
 def find_by_name(session, name):
-    pass
+    return session.query(Dog).filter(Dog.name.ilike(name)).first()
 
 def find_by_id(session, id):
-    pass
+    return session.query(Dog).filter(Dog.id.ilike(id)).first()
 
 def find_by_name_and_breed(session, name, breed):
-    pass
+    return session.query(Dog).filter(Dog.name.ilike(name), Dog.breed.ilike(breed)).first()
 
 def update_breed(session, dog, breed):
-    pass
+    for dog in session.query(Dog):
+            dog.breed = breed
+
+    session.commit()
