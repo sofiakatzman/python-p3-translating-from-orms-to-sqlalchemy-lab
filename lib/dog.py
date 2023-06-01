@@ -1,19 +1,11 @@
 from models import Dog
-
-
-from datetime import datetime
-
-from sqlalchemy import (create_engine, desc,
-    Index, Column, DateTime, Integer, String)
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 
 def create_table(base, engine):
-    engine = create_engine('sqlite:///:memory:')
     base.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
-    # session = Session()
+    session = Session()
 
 
 def save(session, dog):
